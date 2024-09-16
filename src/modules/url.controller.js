@@ -15,7 +15,7 @@ class UrlController {
         });
         return;
       }
-      res.redirect("/");
+      res.redirect(`/?new_url=${url.short_url}`)
     } catch (error) {
       next(error);
     }
@@ -28,8 +28,8 @@ class UrlController {
         res.status(404).send({ message: "Not found" });
         return;
       }
-      req.originalUrl(`${url.full_url}`);
-      // res.redirect(`/${url.full_url}`);
+            
+      res.redirect(`${url.full_url}`);
     } catch (error) {
       next(error);
     }

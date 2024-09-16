@@ -6,6 +6,8 @@ import methodOverride from "method-override";
 import path from "path";
 import router from "./modules/url.routes.js";
 import bodyParser from "body-parser";
+import { urlSchema } from "./modules/url.schema.js";
+import { baseUrl } from "./config/url.config.js";
 
 const app = express();
 // malumotni qaysi tipda almashishi
@@ -21,17 +23,13 @@ app.set("view engine", "ejs");
 app.use("/public", express.static(path.join(process.cwd(), "public")));
 
 // front qismini qaytarish
-app.get("/", async (_, res) => {
-    res.render("index", {new_url:"new url"});
-  });
+app.get("/", async (req, res) => {
+  console.log(req.query);
+  console.log(baseUrl);
+  res.render("index", { new_url: baseUrl + '/'+ req.query.new_url || "" });
+});
 
 app.use("/", router);
-// noto'g'ri urlga zapros kelsa
-app.all("*", (_, res) => {
-  res.status(404).send({
-    message: "Url is not found",
-  });
-});
 
 // errorlarni ushlash middlewari
 app.use(ErrorHandlerMiddleware);
